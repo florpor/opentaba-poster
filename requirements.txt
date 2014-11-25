@@ -1,0 +1,4 @@
+Flask==0.9
+facepy==1.0.4
+twitter==1.15.0
+bitly_api==0.3
