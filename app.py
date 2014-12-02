@@ -31,7 +31,7 @@ def post_worker():
         if 'BITLY_TOKEN' in os.environ.keys():
             try:
                 b = bitly_api.Connection(access_token=os.environ['BITLY_TOKEN'])
-                shortie = b.shorten(plan['details_link'])
+                shortie = b.shorten(plan['url'])
                 plan['url'] = shortie['url']
             except Exception, e:
                 log.exception('Could not shorten the link using bit.ly - %s', e)
