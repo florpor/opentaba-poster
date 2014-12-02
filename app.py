@@ -6,7 +6,7 @@ from json import loads
 from threading import Thread
 from Queue import Queue
 
-from flask import Flask, request
+from flask import Flask, request, abort, make_response
 import bitly_api
 from facepy import GraphAPI
 from twitter import *
@@ -78,14 +78,19 @@ def post_route():
     
     # check if post is given, otherwise bad request
     if 'plan' not in request.form.keys():
-        return 400
+        abort(400)
     
+    # queue the request
     try:
         post_queue.put(request.form)
     except Exception, e:
         log.exception('Could not push post into queue - %s', e)
     
-    return 200
+    # respond quickly to end the connection
+    r = make_response('{"status":"ok"}')
+    r.headers['Access-Control-Allow-Origin'] = '*'
+    r.headers['Content-Type'] = 'application/json; charset=utf-8'
+    return r
 
 
 @app.route('/status')
