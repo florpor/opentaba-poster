@@ -86,8 +86,7 @@ def post_route():
     
     # respond quickly to end the connection
     r = make_response('{"status":"ok"}')
-    r.headers['Access-Control-Allow-Origin'] = '*'
-    r.headers['Content-Type'] = 'application/json; charset=utf-8'
+    r.headers['Content-Type'] = 'application/json'
     return r
 
 
