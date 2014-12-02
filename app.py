@@ -25,7 +25,7 @@ def post_worker():
         post_params = post_queue.get()
         
         plan = loads(post_params['plan'])
-    
+        
         # if bitly access token is defined shorten the link
         if 'BITLY_TOKEN' in os.environ.keys():
             try:
@@ -35,10 +35,8 @@ def post_worker():
             except Exception, e:
                 log.exception('Could not shorten the link using bit.ly - %s', e)
         
-        
-    
         # facebook-needed params
-        if all(param in ['fb_tok', 'fb_page'] for param in post_params.keys()):
+        if all(param in post_params.keys() for param in ['fb_tok', 'fb_page']):
             try:
                 graph = GraphAPI(post_params['fb_tok'])
                 graph.post(
@@ -50,15 +48,15 @@ def post_worker():
                 log.exception('Could not post new plan to facebook page - %s', e)
     
         # twitter-needed params
-        if all(param in ['tw_tok', 'tw_tsec', 'tw_con', 'tw_csec'] for param in post_params.keys()):
+        if all(param in post_params.keys() for param in ['tw_tok', 'tw_tsec', 'tw_con', 'tw_csec']):
             try:
                 tweet_content = '%s: %s' % (plan['title'], plan['content'])
             
                 # shorten our content - max size should be 118, not including the link which will be shortened by twitter if bit.ly is not enabled
                 if len(tweet_content) > 118:
-                    tweet = '%s... %s' % (tweet_content[0:114], url)
+                    tweet = '%s... %s' % (tweet_content[0:114], plan['url'])
                 else:
-                    tweet = '%s %s' % (tweet_content, url)
+                    tweet = '%s %s' % (tweet_content, plan['url'])
             
                 t = Twitter(auth=OAuth(consumer_key=post_params['tw_con'], consumer_secret=post_params['tw_csec'], token=post_params['tw_tok'], token_secret=post_params['tw_tsec']))
                 t.statuses.update(status=tweet)
