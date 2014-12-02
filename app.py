@@ -24,6 +24,7 @@ def post_worker():
         # this will block the thread indefinetly until an item is popped
         post_params = post_queue.get()
         
+        log.exception('GOT A REQUEST IN WORKER')
         plan = loads(post_params['plan'])
         
         # if bitly access token is defined shorten the link
