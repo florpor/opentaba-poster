@@ -6,11 +6,12 @@ from json import loads
 from threading import Thread
 from Queue import Queue
 
-from flask import Flask
+from flask import Flask, request
 import bitly_api
 from facepy import GraphAPI
 from twitter import *
 
+logging.basicConfig(format='%(asctime)-15s %(name)s %(levelname)s %(message)s', level=logging.WARNING)
 log = logging.getLogger(__name__)
 app = Flask(__name__)
 post_queue = Queue()
@@ -37,7 +38,7 @@ def post_worker():
         
     
         # facebook-needed params
-        if all(x in ['fb_tok', 'fb_page'] for param in post_params.keys()):
+        if all(param in ['fb_tok', 'fb_page'] for param in post_params.keys()):
             try:
                 graph = GraphAPI(post_params['fb_tok'])
                 graph.post(
@@ -49,7 +50,7 @@ def post_worker():
                 log.exception('Could not post new plan to facebook page - %s', e)
     
         # twitter-needed params
-        if all(x in ['tw_tok', 'tw_tsec', 'tw_con', 'tw_csec'] for param in post_params.keys()):
+        if all(param in ['tw_tok', 'tw_tsec', 'tw_con', 'tw_csec'] for param in post_params.keys()):
             try:
                 tweet_content = '%s: %s' % (plan['title'], plan['content'])
             
