@@ -27,18 +27,16 @@ def post_worker():
         # this will block the thread indefinetly until an item is popped
         post_params = post_queue.get()
         
-        post = loads(post_params['post'])
-        
         # get the poster's data from our db
-        poster_data = db.posters.findOne({'id': post['poster_id']})
+        poster_data = db.posters.findOne({'id': post_params['poster_id']})
         
         if poster_data is None:
             log.exception('poster_id not valid')
         else:
             # get post details
-            url = (post['url'] if 'url' in post.keys() else '')
-            title = (post['title'] if 'title' in post.keys() else '')
-            content = (post['content'] if 'content' in post.keys() else '')
+            url = (post_params['url'] if 'url' in post_params.keys() else '')
+            title = (post_params['title'] if 'title' in post_params.keys() else '')
+            content = (post_params['content'] if 'content' in post_params.keys() else '')
             
             # if bitly access token is defined shorten the link
             if len(url) > 0 and 'BITLY_TOKEN' in os.environ.keys():
