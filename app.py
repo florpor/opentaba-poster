@@ -28,7 +28,7 @@ def post_worker():
         post_params = post_queue.get()
         
         # get the poster's data from our db
-        poster_data = db.posters.findOne({'id': post_params['poster_id']})
+        poster_data = db.posters.find_one({'id': post_params['poster_id']})
         
         if poster_data is None:
             log.exception('poster_id not valid')
