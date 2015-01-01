@@ -6,6 +6,7 @@ from json import loads
 from threading import Thread
 from Queue import Queue
 import pymongo
+from time import sleep
 
 from flask import Flask, request, abort, make_response
 import bitly_api
@@ -78,6 +79,9 @@ def post_worker():
         
         # done with this task. release
         post_queue.task_done()
+        
+        # sleep for a second so we don't get blocked by the services
+        sleep(1)
 
 
 #### ROUTES ####
