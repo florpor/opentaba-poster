@@ -59,5 +59,5 @@ if __name__ == '__main__':
         print 'Also, "http://0.0.0.0:8080" has to be set as a valid OAuth redirect URI in your app\'s advanced settings'
     else:
         print 'Please browse to this address to authorize Taba Publisher:'
-        app = web.application(url = ('/', 'index'), globals())
+        app = web.application(('/', 'index'), globals())
         app.run()
