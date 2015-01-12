@@ -25,6 +25,9 @@ No interface at the moment, to add a new poster with tokens and an assigned id, 
 }
 ```
 
+A new poster can now be added using a [fabric](http://fabfile.org) task which exists in the [opentaba-server](http://github.com/niryariv/opentaba-server) repository.
+Further details can be found on its [Deployment Readme](http://github.com/niryariv/opentaba-server/blob/master/DEPLOYMENT.md#all-fabric-tasks).
+
 ###Getting The Tokens
 There are two helper scripts made to help you authorize the Facebook and Twitter apps, which require manual web authorization, and get your access tokens easily.
 Before you can run them there are two things you must do:
